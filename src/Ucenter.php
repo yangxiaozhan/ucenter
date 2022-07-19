@@ -6,20 +6,20 @@ use GuzzleHttp\Client;
 
 class Ucenter
 {
-    const BASE_URL = 'https://ucenter.cyapi.com/api/';
     const INVALID_PARAM = [
         'code'=>400,
         'info'=>'参数不合法'
     ];
 
+    protected $base_url;
     protected $app_name;
     protected $guzzleOptions = [];
 
-    public function __construct($app_name,$secret)
+    public function __construct($base_url,$app_name)
     {
+        $this->base_url = $base_url;
         $this->app_name = $app_name;
     }
-
     /** 小程序登录
      * @param $code
      * @param $channel
@@ -82,7 +82,7 @@ class Ucenter
 
     public function request($url,$data)
     {
-        $url = self::BASE_URL.$url;
+        $url = $this->base_url.$url;
         $data['app'] = $this->app_name;
         $response = $this->getHttpClient()->get($url, [
             'query' => $data,
