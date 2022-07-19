@@ -1,0 +1,19 @@
+{
+    "name": "cyqh\/ucenter",
+    "description": "ucenter sdk for chenyangqihang's wechat app",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "xiaozhan",
+            "email": "yangdan@tjcyqh.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Cyqh\\Ucenter\\": "./src/"
+        }
+    }
+}
