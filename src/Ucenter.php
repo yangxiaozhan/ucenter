@@ -31,7 +31,7 @@ class Ucenter
             'code'=>$code,
             'channel'=>$channel
         ];
-        return $this->request($url,$data);
+        return $this->request("get",$url,$data);
     }
 
     /**根据token返回用户信息
@@ -43,7 +43,7 @@ class Ucenter
         $data = [
             'token'=>$token
         ];
-        return $this->request($url,$data);
+        return $this->request("post",$url,$data);
     }
 
 
@@ -56,7 +56,7 @@ class Ucenter
         $data = [
             'token'=>$token
         ];
-        return $this->request($url,$data);
+        return $this->request("get",$url,$data);
     }
 
     /**
@@ -77,16 +77,24 @@ class Ucenter
             'log_id'=>$log_id,
             'remark'=>$remark
         ];
-        return $this->request($url,$data);
+        return $this->request("post",$url,$data);
     }
 
-    public function request($url,$data)
+    public function request($type,$url,$data)
     {
         $url = $this->base_url.$url;
         $data['app'] = $this->app_name;
-        $response = $this->getHttpClient()->get($url, [
-            'query' => $data,
-        ])->getBody()->getContents();
+        if ($type == "post"){
+            $response = $this->getHttpClient()->post($url, [
+                'query' => $data,
+            ])->getBody()->getContents();
+        }else{
+            $response = $this->getHttpClient()->get($url, [
+                'query' => $data,
+            ])->getBody()->getContents();
+        }
+
+
         return json_decode($response, true);
     }
 
