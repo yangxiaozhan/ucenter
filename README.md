@@ -6,22 +6,44 @@
 ## Installing
 
 ```shell
-$ composer require cyqh/ucenter -vvv
+$ composer require cyqh/ucenter
 ```
 
 ## Usage
 
-TODO
+```shell
+注意：需要使用约定的请求地址和对应的app信息
+```
+#### 初始化
+```shell
+use Cyqh\Ucenter;
 
-## Contributing
+$ucenter = new Ucenter/Ucenter($url,$app)
+```
+#### 小程序登录
+```shell
+$ucenter->miniappLogin($code)
+```
 
-You can contribute in one of three ways:
+#### 获取用户信息
+```shell
+$ucenter->user($token)
+```
+#### 获取用户金币信息
+```shell
+$ucenter->getCoins($token)
+```
+#### 设置用户金币信息
+```shell
+$ucenter->setCoin($token,$op_type,$coin_num,$log_id,$remark)
 
-1. File bug reports using the [issue tracker](https://github.com/cyqh/ucenter/issues).
-2. Answer questions or fix bugs on the [issue tracker](https://github.com/cyqh/ucenter/issues).
-3. Contribute new features or update the wiki.
+op_type:minus/add
+$coin_num:整数
+log_id:日志id
+remark：选填，备注信息
 
-_The code contribution process is not very formal. You just need to make sure that you follow the PSR-0, PSR-1, and PSR-2 coding guidelines. Any new code contributions must be accompanied by unit tests where applicable._
+返回：操作金币，并且金币剩余信息
+```
 
 ## License
 
