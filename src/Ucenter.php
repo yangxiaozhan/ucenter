@@ -13,12 +13,14 @@ class Ucenter
 
     protected $base_url;
     protected $app_name;
+    protected $ucenter_secret;
     protected $guzzleOptions = [];
 
-    public function __construct($base_url,$app_name)
+    public function __construct($base_url,$app_name,$app_secret)
     {
         $this->base_url = $base_url;
         $this->app_name = $app_name;
+        $this->ucenter_secret = $app_secret;
     }
     /** 小程序登录
      * @param $code
@@ -84,6 +86,9 @@ class Ucenter
     {
         $url = $this->base_url.$url;
         $data['app'] = $this->app_name;
+        $data['timestamp'] = time();
+        $data['non_str'] = $this->getRandom(32);
+        $data['sign'] = $this->genSign($data);
         if ($type == "post"){
             $response = $this->getHttpClient()->post($url, [
                 'query' => $data,
@@ -106,5 +111,32 @@ class Ucenter
     public function setGuzzleOptions(array $options)
     {
         $this->guzzleOptions = $options;
+    }
+
+    function getRandom($count): string
+    {
+        $str="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $key = "";
+        for($i=0;$i<$count;$i++)
+        {
+            $key .= $str[mt_rand(0,32)];    //生成php随机数
+        }
+        return $key;
+    }
+
+    function genSign($params){
+        ksort($params); //对数组(map)根据键名升序排序
+        $str = '';
+        foreach ($params as $k => $v) {
+            if ($k != "sign"){
+                if ('' == $str) {
+                    $str .= $k . '=' . trim($v);
+                }else {
+                    $str .= '&' . $k . '=' . trim($v);
+                }
+            }
+        }
+        $sign = md5($str); //此处md5值为小写的32个字符
+        return $sign;
     }
 }
