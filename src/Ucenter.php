@@ -71,7 +71,7 @@ class Ucenter
      * @return mixed
      */
     public function setCoin($token,$op_type,$coin_num,$log_id,$remark=""){
-        $url = 'coin/getNum';
+        $url = 'coin/setCoin';
         $data = [
             'token'=>$token,
             'op_type'=>$op_type,
