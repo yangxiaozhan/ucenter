@@ -48,6 +48,20 @@ class Ucenter
         return $this->request("post",$url,$data);
     }
 
+    /**根据修改个人信息返回用户信息
+     * @param $token
+     * @return mixed
+     */
+    public function userInfo($token,$nickname,$avatar){
+        $url = 'user/info';
+        $data = [
+            'token'=>$token,
+            'nickname'=>$nickname,
+            'avatar'=>$avatar
+        ];
+        return $this->request("post",$url,$data);
+    }
+
 
     /**获取积分详情
      * @param $token
