@@ -125,6 +125,8 @@ class Ucenter
     }
 
     function genSign($params){
+        $params['app_secret'] = $this->ucenter_secret;
+
         ksort($params); //对数组(map)根据键名升序排序
         $str = '';
         foreach ($params as $k => $v) {
