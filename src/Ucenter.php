@@ -109,6 +109,23 @@ class Ucenter
         return $this->request("post",$url,$data);
     }
 
+    /**获取金币变动列表
+     * @param $page
+     * @param $pagesize
+     * @param $token
+     * @return false|mixed
+     */
+    public function getCoinHistory($page,$pagesize,$token){
+        $url = 'coin/getHistory';
+        $data = [
+            'token'=>$token,
+            'page'=>$page,
+            'pagesize'=>$pagesize,
+            'end_date'=>date("Y-m-d",time())
+        ];
+        return $this->request("get",$url,$data);
+    }
+
     public function request($type,$url,$data)
     {
         $url = $this->base_url.$url;
