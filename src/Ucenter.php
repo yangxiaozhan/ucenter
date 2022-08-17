@@ -3,6 +3,7 @@
 namespace Cyqh\Ucenter;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
 class Ucenter
 {
@@ -46,6 +47,18 @@ class Ucenter
             'token'=>$token
         ];
         return $this->request("post",$url,$data);
+    }
+
+    /**根据user_id返回用户信息
+     * @param $token
+     * @return mixed
+     */
+    public function remoteUser($uid){
+        $url = 'remote/user';
+        $data = [
+            'uid'=>$uid
+        ];
+        return $this->request("get",$url,$data);
     }
 
     /**根据修改个人信息返回用户信息
@@ -104,16 +117,23 @@ class Ucenter
         $data['non_str'] = $this->getRandom(32);
         $data['sign'] = $this->genSign($data);
         if ($type == "post"){
-            $response = $this->getHttpClient()->post($url, [
-                'query' => $data,
-            ])->getBody()->getContents();
+            try {
+                $response = $this->getHttpClient()->post($url, [
+                    'query' => $data,
+                ])->getBody()->getContents();
+            }catch (RequestException $e){
+                return false;
+            }
+
         }else{
-            $response = $this->getHttpClient()->get($url, [
-                'query' => $data,
-            ])->getBody()->getContents();
+            try {
+                $response = $this->getHttpClient()->get($url, [
+                    'query' => $data,
+                ])->getBody()->getContents();
+            }catch (RequestException $e){
+                return false;
+            }
         }
-
-
         return json_decode($response, true);
     }
 
